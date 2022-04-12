@@ -1,5 +1,7 @@
 require('dotenv/config');
 const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HtmlWebPackPlugin = require('html-webpack-plugin');
 
 const clientPath = path.join(__dirname, 'client');
 const serverPublicPath = path.join(__dirname, 'server/public');
@@ -25,6 +27,18 @@ module.exports = {
             ]
           }
         }
+      },
+      {
+        test: /\.js$/,
+        enforce: 'pre',
+        use: ['source-map-loader']
+      },
+      {
+        test: /\.css$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader'
+        ]
       }
     ]
   },
@@ -41,8 +55,20 @@ module.exports = {
       '/api': `http://localhost:${process.env.PORT}`
     }
   },
-  stats: 'summary',
   performance: {
     hints: false
-  }
+  },
+  plugins: [
+    new HtmlWebPackPlugin({
+      title: 'ArcGIS API  for JavaScript',
+      template: './server/public/index.html',
+      filename: './index.html',
+      chunksSortMode: 'none',
+      inlineSource: '.(css)$'
+    }),
+    new MiniCssExtractPlugin({
+      filename: '[name].[chunkhash].css',
+      chunkFilename: '[id].css'
+    })
+  ]
 };
