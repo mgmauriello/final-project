@@ -1,4 +1,3 @@
-// import Home from './pages/home';
 import React, { useRef, useEffect } from 'react';
 import Search from '@arcgis/core/widgets/Search';
 import MapView from '@arcgis/core/views/MapView';
