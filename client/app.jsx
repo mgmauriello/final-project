@@ -6,15 +6,9 @@ import WebMap from '@arcgis/core/WebMap';
 import BasemapToggle from '@arcgis/core/widgets/BasemapToggle';
 import Config from '@arcgis/core/config';
 
-import '../server/public/styles.css';
+import './app.css';
 
 Config.apiKey = 'AAPK3480a78e4f134cf88ef097abb200eb1eQR9IP6Sv5iSTgbzlt3yhDJ3vIVwSkDJlcnTbcIJ0iWaNCu_L4blv6qKOXbjQrwF5';
-
-// export default class App extends React.Component {
-//   render() {
-//     return <Home />;
-//   }
-// }
 
 function App() {
 
@@ -31,9 +25,8 @@ function App() {
       const view = new MapView({
         container: mapDiv.current,
         map: webmap,
-        center: [117.8265, 33.6846],
-        zoom: 4,
-        minZoom: 4
+        center: [-47.109, 14.945],
+        zoom: 4
       });
 
       const search = new Search({
