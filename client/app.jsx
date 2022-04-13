@@ -1,49 +1,43 @@
-import React, { useRef, useEffect } from 'react';
-import Search from '@arcgis/core/widgets/Search';
-import MapView from '@arcgis/core/views/MapView';
-import WebMap from '@arcgis/core/WebMap';
-import BasemapToggle from '@arcgis/core/widgets/BasemapToggle';
-import Config from '@arcgis/core/config';
+import React from 'react';
+import Map from './map';
 
-import './app.css';
+export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      title: ''
+    };
+    this.fileInputRef = React.createRef();
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleTitleChange = this.handleTitleChange.bind(this);
+  }
 
-Config.apiKey = 'AAPK3480a78e4f134cf88ef097abb200eb1eQR9IP6Sv5iSTgbzlt3yhDJ3vIVwSkDJlcnTbcIJ0iWaNCu_L4blv6qKOXbjQrwF5';
+  handleCaptionChange(event) {
+    this.setState({ title: event.target.value });
+  }
 
-function App() {
-
-  const mapDiv = useRef(null);
-
-  useEffect(() => {
-    if (mapDiv.current) {
-      const webmap = new WebMap({
-        portalItem: {
-          id: 'aa1d3f80270146208328cf66d022e09c'
-        }
+  handleSubmit(event) {
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append('title', this.state.title);
+    formData.append('soundscape', this.fileInputRef.current.files[0]);
+    fetch('/api/uploads', {
+      method: 'POST',
+      body: formData
+    })
+      .then(response => response.json())
+      .then(result => {
+        this.setState({ title: '' });
+        this.fileInputRef.current.value = null;
+      })
+      .catch(err => {
+        console.error('error:', err);
       });
+  }
 
-      const view = new MapView({
-        container: mapDiv.current,
-        map: webmap,
-        center: [-47.109, 14.945],
-        zoom: 4
-      });
-
-      const search = new Search({
-        view
-      });
-
-      view.ui.add(search, 'top-right');
-
-      const basemapToggle = new BasemapToggle({
-        view,
-        nextBasemap: 'arcgis-imagery'
-      });
-
-      view.ui.add(basemapToggle, 'bottom-right');
-    }
-  }, []);
-
-  return <div className="map-div" ref={mapDiv}></div>;
+  render() {
+    return (
+      <Map />
+    );
+  }
 }
-
-export default App;

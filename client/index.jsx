@@ -1,9 +1,12 @@
+import App from './app';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './app';
-import './index.css';
+import Map from './map';
+import './css/index.css';
 
 ReactDOM.render(
-  <App />,
+  <Map>
+    <App />
+  </Map >,
   document.querySelector('#root')
 );

@@ -17,6 +17,7 @@
     "@arcgis/core": "^4.23.7",
     "argon2": "^0.28.5",
     "dotenv": "^16.0.0",
+    "esri-loader": "^3.5.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mini-css-extract-plugin": "^2.6.0",
