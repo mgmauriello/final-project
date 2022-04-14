@@ -4,10 +4,12 @@ import MapView from '@arcgis/core/views/MapView';
 import WebMap from '@arcgis/core/WebMap';
 import BasemapToggle from '@arcgis/core/widgets/BasemapToggle';
 import Config from '@arcgis/core/config';
-// import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
-// import Popup from '@arcgis/core/widgets/Popup';
 import Graphic from '@arcgis/core/Graphic';
-import Editor from '@arcgis/core/widgets/Editor';
+// import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
+// import FeatureTemplates from '@arcgis/core/widgets/FeatureTemplates';
+// import FeatureForm from '@arcgis/core/widgets/FeatureF';
+// import Popup from '@arcgis/core/widgets/Popup';
+// import Editor from '@arcgis/core/widgets/Editor';
 
 import './css/app.css';
 
@@ -51,14 +53,13 @@ function Map() {
           geometry: {
             type: 'point',
             latitude: event.mapPoint.latitude,
-            longitude: event.mapPoint.longitude,
-            spatialReference: view.spatialReference
+            longitude: event.mapPoint.longitude
+            // spatialReference: view.spatialReference
           },
           symbol: {
-            type: 'simple-marker', // autocasts as new SimpleFillSymbol
+            type: 'simple-marker',
             color: [255, 10, 10],
             outline: {
-              // autocasts as new SimpleLineSymbol()
               color: [255, 255, 255],
               width: 2
             }
@@ -70,11 +71,6 @@ function Map() {
         search.search(event.mapPoint);
         search.resultGraphicEnabled = false;
       });
-
-      const editor = new Editor({
-        view
-      });
-      view.ui.add(editor, 'top-right');
     }
   }, []);
 
