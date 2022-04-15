@@ -1,43 +1,42 @@
 // import React from 'react';
-// import Map from './map';
+// import Map from './components/map';
+// import ParseRoute from './lib/parse-route';
+// import SoundscapeForm from './pages/soundscapeForm';
+// import MapPage from './pages/mapPage';
 
 // export default class App extends React.Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       title: ''
-//     };
-//     this.fileInputRef = React.createRef();
-//     this.handleSubmit = this.handleSubmit.bind(this);
-//     this.handleTitleChange = this.handleTitleChange.bind(this);
-//   }
+//   // constructor(props) {
+//   //   super(props);
+//   //   this.state = {
+//   //     route: ParseRoute(window.location.hash)
+//   //   };
+//   // }
 
-//   handleCaptionChange(event) {
-//     this.setState({ title: event.target.value });
-//   }
+//   // componentDidMount() {
+//   //   window.addEventListener('hashchange', () => {
+//   //     this.setState({
+//   //       route: ParseRoute(window.location.hash)
+//   //     });
+//   //   }, false);
+//   // }
 
-//   handleSubmit(event) {
-//     event.preventDefault();
-//     const formData = new FormData();
-//     formData.append('title', this.state.title);
-//     formData.append('soundscape', this.fileInputRef.current.files[0]);
-//     fetch('/api/uploads', {
-//       method: 'POST',
-//       body: formData
-//     })
-//       .then(response => response.json())
-//       .then(result => {
-//         this.setState({ title: '' });
-//         this.fileInputRef.current.value = null;
-//       })
-//       .catch(err => {
-//         console.error('error:', err);
-//       });
-//   }
+//   // renderPage() {
+//   //   const { route } = this.state;
+//   //   if (route.path === '') {
+//   //     return <MapPage />;
+//   //   }
+//   //   if (route.path === 'form') {
+//   //     return <SoundscapeForm />;
+//   //   }
+//   // }
 
 //   render() {
 //     return (
-//       <Map />
+//       <>
+//         <Map />
+//         {this.renderPage()}
+//       </>
 //     );
 //   }
+
 // }
