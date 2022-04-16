@@ -37,6 +37,7 @@ export default function Map(props) {
     }]);
   }, []);
   const [markers, setMarkers] = React.useState([]);
+  const [selectedMarker, setSelectedMarker] = React.useState(null);
 
   React.useEffect(() => {
     fetch('/api/soundscapes')
@@ -67,15 +68,26 @@ export default function Map(props) {
     onClick={onMapClick}
     onLoad={onMapLoad}
     >
-      {markers.map(marker => (
+      {markers.map(markers => (
         <Marker
-          key={marker.soundscapeId}
-          position={{ lat: marker.lat, lng: marker.lng }}
+          key={markers.soundscapeId}
+          position={{ lat: markers.lat, lng: markers.lng }}
         onClick={() => {
-          setSelected(marker);
+          setSelectedMarker(markers);
         }}
         />
       ))}
+      {selectedMarker &&
+          <InfoWindow
+          position={{ lat: selectedMarker.lat, lng: selectedMarker.lng }}
+            onCloseClick={() => { setSelectedMarker(null); }}>
+            <div>
+              <h5>Title: {selectedMarker.title}</h5>
+              <p>Description: {selectedMarker.description}</p>
+            <audio src={selectedMarker.fileUrl}>
+            </audio>
+            </div>
+          </InfoWindow> }
 
       {marker.map(marker => (
         <Marker
