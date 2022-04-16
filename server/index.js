@@ -1,7 +1,7 @@
 require('dotenv/config');
 const pg = require('pg');
 const express = require('express');
-const ClientError = require('./client-error');
+// const ClientError = require('./client-error');
 const errorMiddleware = require('./error-middleware');
 const staticMiddleware = require('./static-middleware');
 const uploadsMiddleware = require('./uploads-middleware');
@@ -20,17 +20,20 @@ const jsonMiddleware = express.json();
 app.use(jsonMiddleware);
 
 app.post('/api/uploads', uploadsMiddleware, (req, res, next) => {
-  const { title } = req.body;
-  if (!title) {
-    throw new ClientError(400, 'title is a required field');
-  }
+  const { title, description, lat, lng } = req.body;
   const fileUrl = 'server/public/sounds/' + req.file.filename;
   const sql = `
-    insert into "soundscapes" ( "title", "fileUrl", "uploadedAt")
-    values ($1, $2, now())
-    returning *
-  `;
-  const params = [title, fileUrl];
+    insert into "soundscapes" (
+                "title",
+                "description",
+                "lat",
+                "lng",
+                "fileUrl",
+                "uploadedAt")
+    values ($1, $2, $3, $4, $5, now())
+    returning *`;
+
+  const params = [title, description, lat, lng, fileUrl];
   db.query(sql, params)
     .then(result => {
       const [file] = result.rows;
@@ -42,8 +45,7 @@ app.post('/api/uploads', uploadsMiddleware, (req, res, next) => {
 app.get('/api/soundscapes', (req, res, next) => {
   const sql = `
     select *
-      from "soundscapes"
-  `;
+      from "soundscapes"`;
   db.query(sql)
     .then(result => {
       res.json(result.rows);

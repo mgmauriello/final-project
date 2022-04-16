@@ -28,19 +28,19 @@ export default class SoundscapeForm extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const { title, description, marker } = this.state;
+
+    const { title, description } = this.state;
     const formData = new FormData();
     formData.append('title', title);
     formData.append('description', description);
-    formData.append('lat', marker.lat);
-    formData.append('lng', marker.lng);
-    formData.append('fileUrl', this.fileInputRef.current.files[0]);
+    formData.append('lat', this.props.marker.lat);
+    formData.append('lng', this.props.marker.lng);
+    formData.append('audio', this.fileInputRef.current.files[0]);
     const req = {
       method: 'POST',
       body: formData
     };
-
-    fetch('/api/soundscapes', req)
+    fetch('/api/uploads', req)
       .then(res => res.json())
       .then(response => {
         this.setState({
@@ -52,17 +52,15 @@ export default class SoundscapeForm extends React.Component {
         this.fileInputRef.current.value = null;
       })
       .catch(err => console.error('Fetch Failed!', err));
-
   }
 
   render() {
-    if (!this.state.form) return null;
     const { handleChange, handleSubmit } = this;
 
     return (
-      <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+      <Form onSubmit={handleSubmit}>
         <Form.Label className="mt-2" htmlFor='title'>
-          Title:
+          Title
         </Form.Label>
         <Form.Control
           required
@@ -79,13 +77,13 @@ export default class SoundscapeForm extends React.Component {
           required
           id='mp3File'
           type='file'
-          name='mp3'
+          name='audio'
           ref={this.fileInputRef}
-          accept=".mp3"
+          accept="audio/mp3,audio/*;capture=microphone"
           size='sm'
         />
         <Form.Label htmlFor='description'>
-          Description or Information:
+          Description or Information
         </Form.Label>
         <Form.Control
           className='mb-3'
@@ -97,10 +95,10 @@ export default class SoundscapeForm extends React.Component {
           placeholder='Description of Soundscape...'
           onChange={handleChange}
         />
-        <Button variant="success" size='sm' type="submit" onSubmit={handleSubmit}>
+        <Button variant="success" size='sm' type="submit">
           Submit
         </Button>
-      </Form.Group>
+      </Form>
     );
   }
 }

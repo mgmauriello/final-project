@@ -25,12 +25,12 @@ export default function Map() {
     libraries
   });
 
-  const [markers, setMarkers] = React.useState([]);
+  const [marker, setMarker] = React.useState([]);
   const [selected, setSelected] = React.useState(null);
   const [showModal, setModal] = React.useState(false);
 
   const onMapClick = React.useCallback(event => {
-    setMarkers(current => [...current, {
+    setMarker(current => [{
       lat: event.latLng.lat(),
       lng: event.latLng.lng(),
       locationId: counter++
@@ -57,7 +57,7 @@ export default function Map() {
     onClick={onMapClick}
     onLoad={onMapLoad}
     >
-      {markers.map(marker => (
+      {marker.map(marker => (
         <Marker
           key={marker.locationId}
           position={{ lat: marker.lat, lng: marker.lng }}
@@ -83,9 +83,7 @@ export default function Map() {
         <Modal.Title id="soundscape-modal">Create Soundscape</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <div>
-          <SoundscapeForm/>
-        </div>
+        <SoundscapeForm marker={marker[0]} />
       </ Modal.Body>
     </Modal>
 
