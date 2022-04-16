@@ -1,9 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './app';
-import './index.css';
+import Map from './components/map';
 
-ReactDOM.render(
-  <App />,
-  document.querySelector('#root')
-);
+const rootElement = document.getElementById('root');
+ReactDOM.render(<Map />, rootElement);
