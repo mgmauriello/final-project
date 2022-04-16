@@ -40,6 +40,7 @@ export default class SoundscapeForm extends React.Component {
       method: 'POST',
       body: formData
     };
+
     fetch('/api/uploads', req)
       .then(res => res.json())
       .then(response => {

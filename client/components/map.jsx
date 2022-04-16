@@ -18,7 +18,7 @@ const center = { lat: 37.4419, lng: -122.1419 };
 
 let counter = 1;
 
-export default function Map() {
+export default function Map(props) {
 
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: 'AIzaSyDS1KOvY-L9vNT8SmKMZmzgYs8UPzCaJMA',
@@ -35,6 +35,17 @@ export default function Map() {
       lng: event.latLng.lng(),
       locationId: counter++
     }]);
+  }, []);
+  const [markers, setMarkers] = React.useState([]);
+  const [selectedMarker, setSelectedMarker] = React.useState(null);
+
+  React.useEffect(() => {
+    fetch('/api/soundscapes')
+      .then(response => response.json())
+      .then(markers => {
+        setMarkers(markers);
+      })
+      .catch(err => console.error('Fetch Failed!', err));
   }, []);
 
   const mapRef = React.useRef();
@@ -57,6 +68,27 @@ export default function Map() {
     onClick={onMapClick}
     onLoad={onMapLoad}
     >
+      {markers.map(markers => (
+        <Marker
+          key={markers.soundscapeId}
+          position={{ lat: markers.lat, lng: markers.lng }}
+        onClick={() => {
+          setSelectedMarker(markers);
+        }}
+        />
+      ))}
+      {selectedMarker &&
+          <InfoWindow
+          position={{ lat: selectedMarker.lat, lng: selectedMarker.lng }}
+            onCloseClick={() => { setSelectedMarker(null); }}>
+            <div>
+              <h5>Title: {selectedMarker.title}</h5>
+              <p>Description: {selectedMarker.description}</p>
+            <audio src={selectedMarker.fileUrl}>
+            </audio>
+            </div>
+          </InfoWindow> }
+
       {marker.map(marker => (
         <Marker
           key={marker.locationId}
@@ -76,6 +108,7 @@ export default function Map() {
           </div>
       </InfoWindow>)
     }
+
     </GoogleMap>
 
     <Modal size="lg" show={showModal} onHide={() => setModal(false)}>
