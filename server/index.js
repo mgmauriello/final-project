@@ -1,7 +1,6 @@
 require('dotenv/config');
 const pg = require('pg');
 const express = require('express');
-// const ClientError = require('./client-error');
 const errorMiddleware = require('./error-middleware');
 const staticMiddleware = require('./static-middleware');
 const uploadsMiddleware = require('./uploads-middleware');
@@ -42,6 +41,7 @@ app.post('/api/uploads', uploadsMiddleware, (req, res, next) => {
     .catch(err => next(err));
 });
 
+// Get all pins from to be viewed on map:
 app.get('/api/soundscapes', (req, res, next) => {
   const sql = `
     select *

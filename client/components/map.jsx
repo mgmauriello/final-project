@@ -8,7 +8,6 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import React from 'react';
 import SoundscapeForm from './SoundscapeForm';
-// import StoredMarker from './StoredMarker';
 
 const libraries = ['places'];
 const mapContainerStyle = {
@@ -37,6 +36,16 @@ export default function Map(props) {
       locationId: counter++
     }]);
   }, []);
+  const [markers, setMarkers] = React.useState([]);
+
+  React.useEffect(() => {
+    fetch('/api/soundscapes')
+      .then(response => response.json())
+      .then(markers => {
+        setMarkers(markers);
+      })
+      .catch(err => console.error('Fetch Failed!', err));
+  }, []);
 
   const mapRef = React.useRef();
   const onMapLoad = React.useCallback(map => {
@@ -49,8 +58,6 @@ export default function Map(props) {
   const handleAddSoundscapeClick = () => {
     setModal(true);
   };
-  const savedMarkers = [{ soundscapeId: 3, fileUrl: '', lat: 38.834158324677844, lng: -122.82302912287078 },
-    { soundscapeId: 2, fileUrl: '', lat: 37.83387105305894, lng: -122.82266124016441 }];
 
   return <div>
     <GoogleMap
@@ -60,13 +67,13 @@ export default function Map(props) {
     onClick={onMapClick}
     onLoad={onMapLoad}
     >
-      {savedMarkers.map(marker => (
+      {markers.map(marker => (
         <Marker
           key={marker.soundscapeId}
           position={{ lat: marker.lat, lng: marker.lng }}
-        // onClick={() => {
-        //   setSelected(marker);
-        // }}
+        onClick={() => {
+          setSelected(marker);
+        }}
         />
       ))}
 
@@ -89,8 +96,7 @@ export default function Map(props) {
           </div>
       </InfoWindow>)
     }
-{/* submitted markers */}
-      {/* <StoredMarker /> */}
+
     </GoogleMap>
 
     <Modal size="lg" show={showModal} onHide={() => setModal(false)}>
