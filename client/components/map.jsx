@@ -8,6 +8,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import React from 'react';
 import SoundscapeForm from './SoundscapeForm';
+// import StoredMarker from './StoredMarker';
 
 const libraries = ['places'];
 const mapContainerStyle = {
@@ -18,7 +19,7 @@ const center = { lat: 37.4419, lng: -122.1419 };
 
 let counter = 1;
 
-export default function Map() {
+export default function Map(props) {
 
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: 'AIzaSyDS1KOvY-L9vNT8SmKMZmzgYs8UPzCaJMA',
@@ -48,6 +49,8 @@ export default function Map() {
   const handleAddSoundscapeClick = () => {
     setModal(true);
   };
+  const savedMarkers = [{ soundscapeId: 3, fileUrl: '', lat: 38.834158324677844, lng: -122.82302912287078 },
+    { soundscapeId: 2, fileUrl: '', lat: 37.83387105305894, lng: -122.82266124016441 }];
 
   return <div>
     <GoogleMap
@@ -57,6 +60,16 @@ export default function Map() {
     onClick={onMapClick}
     onLoad={onMapLoad}
     >
+      {savedMarkers.map(marker => (
+        <Marker
+          key={marker.soundscapeId}
+          position={{ lat: marker.lat, lng: marker.lng }}
+        // onClick={() => {
+        //   setSelected(marker);
+        // }}
+        />
+      ))}
+
       {marker.map(marker => (
         <Marker
           key={marker.locationId}
@@ -76,6 +89,8 @@ export default function Map() {
           </div>
       </InfoWindow>)
     }
+{/* submitted markers */}
+      {/* <StoredMarker /> */}
     </GoogleMap>
 
     <Modal size="lg" show={showModal} onHide={() => setModal(false)}>
