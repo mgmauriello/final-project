@@ -1,0 +1,19 @@
+.player {
+  align-items: center;
+  display: flex;
+  max-width: 100px;
+}
+
+.circle {
+  background: white;
+  border: none;
+}
+
+.play,
+.pause {
+  width: 20px;
+  height: 20px;
+  position: relative;
+  left: 5px;
+  color: #3e2c41;
+}

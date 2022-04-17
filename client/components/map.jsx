@@ -9,6 +9,7 @@ import Modal from 'react-bootstrap/Modal';
 import React from 'react';
 import SoundscapeForm from './SoundscapeForm';
 import { PlayBtnFill, PauseBtnFill } from 'react-bootstrap-icons';
+import styles from '../styles/AudioPlayer.module.css';
 
 const libraries = ['places'];
 const mapContainerStyle = {
@@ -37,13 +38,14 @@ export default function Map(props) {
       locationId: counter++
     }]);
   }, []);
+
+  // show posted markers for soundscapes
   const [markers, setMarkers] = React.useState([]);
   const [selectedMarker, setSelectedMarker] = React.useState(null);
 
-  const [isPlaying, setIsPlaying] = React.useState(false);
-  // const [duration, setDuration] = React.useState(0);
+  const [isPlaying, setIsPlaying] = React.useState(false); // for audio player
 
-  const audioPlayer = React.useRef(); // for audio component
+  const audioPlayer = React.useRef();
 
   const togglePlayPause = () => {
     const prevValue = isPlaying;
@@ -94,6 +96,7 @@ export default function Map(props) {
         }}
         />
       ))}
+
       {selectedMarker &&
           <InfoWindow
           position={{ lat: selectedMarker.lat, lng: selectedMarker.lng }}
@@ -101,13 +104,15 @@ export default function Map(props) {
             <div>
               <h5>Title: {selectedMarker.title}</h5>
               <p>Description: {selectedMarker.description}</p>
-              <audio ref={audioPlayer} src={selectedMarker.fileUrl}></audio>
-              <button size='sm' onClick={togglePlayPause}>
-                {isPlaying
-                  ? <PauseBtnFill />
-                  : <PlayBtnFill />
-                }
-              </button>
+              <div className={styles.player}>
+                <audio ref={audioPlayer} src={selectedMarker.fileUrl}></audio>
+                <button size='sm' className={styles.circle} onClick={togglePlayPause}>
+                  {isPlaying
+                    ? <PauseBtnFill className={styles.play}/>
+                    : <PlayBtnFill className={styles.pause} />
+                  }
+                </button>
+              </div>
             </div>
           </InfoWindow> }
 
