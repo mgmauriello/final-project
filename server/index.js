@@ -20,7 +20,7 @@ app.use(jsonMiddleware);
 
 app.post('/api/uploads', uploadsMiddleware, (req, res, next) => {
   const { title, description, lat, lng } = req.body;
-  const fileUrl = 'server/public/sounds/' + req.file.filename;
+  const fileUrl = '/server/public/sounds/' + req.file.filename;
   const sql = `
     insert into "soundscapes" (
                 "title",
@@ -41,7 +41,6 @@ app.post('/api/uploads', uploadsMiddleware, (req, res, next) => {
     .catch(err => next(err));
 });
 
-// Get all pins from to be viewed on map:
 app.get('/api/soundscapes', (req, res, next) => {
   const sql = `
     select *

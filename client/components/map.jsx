@@ -8,6 +8,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import React from 'react';
 import SoundscapeForm from './SoundscapeForm';
+import { PlayBtnFill, PauseBtnFill } from 'react-bootstrap-icons';
 
 const libraries = ['places'];
 const mapContainerStyle = {
@@ -38,6 +39,22 @@ export default function Map(props) {
   }, []);
   const [markers, setMarkers] = React.useState([]);
   const [selectedMarker, setSelectedMarker] = React.useState(null);
+
+  const [isPlaying, setIsPlaying] = React.useState(false);
+  // const [duration, setDuration] = React.useState(0);
+
+  const audioPlayer = React.useRef(); // for audio component
+
+  const togglePlayPause = () => {
+    const prevValue = isPlaying;
+
+    setIsPlaying(!prevValue);
+    if (prevValue) {
+      audioPlayer.current.play();
+    } else {
+      audioPlayer.current.pause();
+    }
+  };
 
   React.useEffect(() => {
     fetch('/api/soundscapes')
@@ -84,8 +101,13 @@ export default function Map(props) {
             <div>
               <h5>Title: {selectedMarker.title}</h5>
               <p>Description: {selectedMarker.description}</p>
-            <audio src={selectedMarker.fileUrl}>
-            </audio>
+              <audio ref={audioPlayer} src={selectedMarker.fileUrl}></audio>
+              <button size='sm' onClick={togglePlayPause}>
+                {isPlaying
+                  ? <PauseBtnFill />
+                  : <PlayBtnFill />
+                }
+              </button>
             </div>
           </InfoWindow> }
 
