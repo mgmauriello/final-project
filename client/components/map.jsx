@@ -4,14 +4,14 @@ import {
   Marker,
   InfoWindow
 } from '@react-google-maps/api';
+import AudioPlayer from './AudioPlayer';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import React from 'react';
 import SoundscapeForm from './SoundscapeForm';
-import { PlayBtnFill, PauseBtnFill } from 'react-bootstrap-icons';
-import styles from '../styles/AudioPlayer.module.css';
 
 const libraries = ['places'];
+
 const mapContainerStyle = {
   width: '100vw',
   height: '100vh'
@@ -43,21 +43,6 @@ export default function Map(props) {
   const [markers, setMarkers] = React.useState([]);
   const [selectedMarker, setSelectedMarker] = React.useState(null);
 
-  const [isPlaying, setIsPlaying] = React.useState(false); // for audio player
-
-  const audioPlayer = React.useRef();
-
-  const togglePlayPause = () => {
-    const prevValue = isPlaying;
-
-    setIsPlaying(!prevValue);
-    if (prevValue) {
-      audioPlayer.current.play();
-    } else {
-      audioPlayer.current.pause();
-    }
-  };
-
   React.useEffect(() => {
     fetch('/api/soundscapes')
       .then(response => response.json())
@@ -71,7 +56,6 @@ export default function Map(props) {
   const onMapLoad = React.useCallback(map => {
     mapRef.current = map;
   }, []);
-
   if (loadError) return 'Error loading maps';
   if (!isLoaded) return 'Loading Maps';
 
@@ -79,74 +63,68 @@ export default function Map(props) {
     setModal(true);
   };
 
-  return <div>
-    <GoogleMap
-    mapContainerStyle={mapContainerStyle}
-    zoom={7}
-    center={center}
-    onClick={onMapClick}
-    onLoad={onMapLoad}
-    >
+  return (
+    <div>
+      <GoogleMap
+      mapContainerStyle={mapContainerStyle}
+      zoom={7}
+      center={center}
+      onClick={onMapClick}
+      onLoad={onMapLoad}
+      >
 
-      {markers.map(markers => (
-        <Marker
-          key={markers.soundscapeId}
-          position={{ lat: markers.lat, lng: markers.lng }}
-        onClick={() => {
-          setSelectedMarker(markers);
-        }}
-        />
-      ))}
-
-      {selectedMarker &&
-          <InfoWindow
-          position={{ lat: selectedMarker.lat, lng: selectedMarker.lng }}
-            onCloseClick={() => { setSelectedMarker(null); }}>
-            <div>
-              <h5>Title: {selectedMarker.title}</h5>
-              <p>Description: {selectedMarker.description}</p>
-              <div className={styles.player}>
-                <audio ref={audioPlayer} src={selectedMarker.fileUrl}></audio>
-                <button size='sm' className={styles.circle} onClick={togglePlayPause}>
-                  {isPlaying
-                    ? <PauseBtnFill className={styles.play}/>
-                    : <PlayBtnFill className={styles.pause} />
-                  }
-                </button>
-              </div>
-            </div>
-          </InfoWindow> }
-
-      {marker.map(marker => (
-        <Marker
-          key={marker.locationId}
-          position={{ lat: marker.lat, lng: marker.lng }}
-          onClick={() => {
-            setSelected(marker);
-          }}
+        {markers.map(markers => (
+          <Marker
+            key={markers.soundscapeId}
+            position={{ lat: markers.lat, lng: markers.lng }}
+            onClick={() => {
+              setSelectedMarker(markers);
+            }}
           />
-      ))}
-      {selected &&
-        (<InfoWindow position={{ lat: selected.lat, lng: selected.lng }}
-            onCloseClick={() => {
-              setSelected(null);
-            }}>
-          <div>
-          <Button variant='success' onClick={handleAddSoundscapeClick}>Add Soundscape</Button>
-          </div>
-      </InfoWindow>)
-    }
+        ))}
 
-    </GoogleMap>
+        {selectedMarker &&
+            <InfoWindow
+            position={{ lat: selectedMarker.lat, lng: selectedMarker.lng }}
+              onCloseClick={() => { setSelectedMarker(null); }}>
+              <div>
+                <h5>Title: {selectedMarker.title}</h5>
+                <p>Description: {selectedMarker.description}</p>
+                  <AudioPlayer src={selectedMarker.fileUrl} />
+              </div>
+            </InfoWindow> }
 
-    <Modal size="lg" show={showModal} onHide={() => setModal(false)}>
-      <Modal.Header>
-        <Modal.Title id="soundscape-modal">Create Soundscape</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <SoundscapeForm marker={marker[0]} />
-      </ Modal.Body>
-    </Modal>
+        {marker.map(marker => (
+          <Marker
+            key={marker.locationId}
+            position={{ lat: marker.lat, lng: marker.lng }}
+            onClick={() => {
+              setSelected(marker);
+            }}
+            />
+        ))}
+        {selected &&
+          (<InfoWindow position={{ lat: selected.lat, lng: selected.lng }}
+              onCloseClick={() => {
+                setSelected(null);
+              }}>
+            <div>
+            <Button variant='success' onClick={handleAddSoundscapeClick}>Add Soundscape</Button>
+            </div>
+        </InfoWindow>)
+      }
 
-  </div>;
+      </GoogleMap>
+
+      <Modal size="lg" show={showModal} onHide={() => setModal(false)}>
+        <Modal.Header>
+          <Modal.Title id="soundscape-modal">Create Soundscape</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <SoundscapeForm marker={marker[0]} />
+        </ Modal.Body>
+      </Modal>
+
+    </div>
+  );
 }
