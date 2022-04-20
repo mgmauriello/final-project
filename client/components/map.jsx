@@ -40,14 +40,14 @@ export default function Map(props) {
   }, []);
 
   // show posted markers for soundscapes
-  const [markers, setMarkers] = React.useState([]);
+  const [soundscapeMarkers, setMarkers] = React.useState([]);
   const [selectedMarker, setSelectedMarker] = React.useState(null);
 
   React.useEffect(() => {
     fetch('/api/soundscapes')
       .then(response => response.json())
-      .then(markers => {
-        setMarkers(markers);
+      .then(soundscapeMarkers => {
+        setMarkers(soundscapeMarkers);
       })
       .catch(err => console.error('Fetch Failed!', err));
   }, []);
@@ -73,18 +73,19 @@ export default function Map(props) {
       onLoad={onMapLoad}
       >
 
-        {markers.map(markers => (
+        {soundscapeMarkers.map(soundscapeMarkers => (
           <Marker
-            key={markers.soundscapeId}
-            position={{ lat: markers.lat, lng: markers.lng }}
+            key={soundscapeMarkers.soundscapeId}
+            position={{ lat: soundscapeMarkers.lat, lng: soundscapeMarkers.lng }}
             onClick={() => {
-              setSelectedMarker(markers);
+              setSelectedMarker(soundscapeMarkers);
             }}
           />
         ))}
 
         {selectedMarker &&
             <InfoWindow
+            options={{ maxWidth: 345 }}
             position={{ lat: selectedMarker.lat, lng: selectedMarker.lng }}
               onCloseClick={() => { setSelectedMarker(null); }}>
               <div>
