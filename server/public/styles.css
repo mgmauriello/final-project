@@ -1,4 +1,53 @@
 #root {
-  height: 800px;
-  max-width: 100%;
+  height: 100%;
+}
+
+.target {
+  position: absolute;
+  top: 0.65rem;
+  right: 10%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 40px;
+  z-index: 2;
+  border-radius: 3px;
+}
+
+.player {
+  align-items: center;
+  display: flex;
+}
+
+.circle {
+  background: white;
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.play,
+.pause {
+  width: 20px;
+  height: 20px;
+  position: relative;
+  left: 5px;
+  color: #3e2c41;
+}
+
+.current,
+.duration {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.9rem;
+  padding: 10px;
+}
+
+.progress {
+  border-radius: 10px;
+  position: relative;
+  height: 11px;
+  outline: none;
+  background: blanchedalmond;
 }
