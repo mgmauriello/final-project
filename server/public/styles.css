@@ -51,3 +51,13 @@
   outline: none;
   background: blanchedalmond;
 }
+
+.geolocate {
+  background-color: #456268 !important;
+  box-shadow: 4px 2px 4px grey;
+  border: #456268 !important;
+}
+
+.locate-text {
+  margin: 0;
+}

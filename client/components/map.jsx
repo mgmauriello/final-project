@@ -8,6 +8,7 @@ import AudioPlayer from './AudioPlayer';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import React from 'react';
+import ReactDOM from 'react-dom';
 import SoundscapeForm from './SoundscapeForm';
 
 const libraries = ['places'];
@@ -31,6 +32,7 @@ export default function Map(props) {
   const [selected, setSelected] = React.useState(null);
   const [showModal, setModal] = React.useState(false);
 
+  // setting a singular marker
   const onMapClick = React.useCallback(event => {
     setMarker(current => [{
       lat: event.latLng.lat(),
@@ -52,10 +54,35 @@ export default function Map(props) {
       .catch(err => console.error('Fetch Failed!', err));
   }, []);
 
-  const mapRef = React.useRef();
+  // Passes a callback with GeoLocate button to be rendered into map
   const onMapLoad = React.useCallback(map => {
-    mapRef.current = map;
+    const locateDiv = document.createElement('div');
+    locateDiv.style = 'padding: 10px';
+
+    const locatePosition = window.google.maps.ControlPosition.TOP_RIGHT;
+    ReactDOM.render(<GeoLocate map={map} />, locateDiv);
+    map.controls[locatePosition].push(locateDiv);
   }, []);
+
+  // Use Geolocation to locate the user's location
+  function GeoLocate({ map }) {
+    return (
+      <Button className='geolocate' size='sm' type="button" onClick={() => {
+        navigator.geolocation.getCurrentPosition(position => {
+          map.panTo({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          });
+          map.setZoom(14);
+        }, () => null
+        );
+      }}
+      >
+      <p className='locate-text'>{'Find me!'}</p>
+      </Button>
+    );
+  }
+
   if (loadError) return 'Error loading maps';
   if (!isLoaded) return 'Loading Maps';
 
@@ -72,6 +99,8 @@ export default function Map(props) {
       onClick={onMapClick}
       onLoad={onMapLoad}
       >
+        <GeoLocate />
+
         {soundscapeMarkers.map(soundscapeMarkers => (
           <Marker
             key={soundscapeMarkers.soundscapeId}
