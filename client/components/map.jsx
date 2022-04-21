@@ -54,31 +54,31 @@ export default function Map(props) {
       .catch(err => console.error('Fetch Failed!', err));
   }, []);
 
-  // const mapRef = React.useRef();
-
+  // Passes a callback with GeoLocate button to be rendered into map
   const onMapLoad = React.useCallback(map => {
-    const controlsDiv = document.createElement('div');
-    controlsDiv.style = 'padding: 10px';
-    const controlsPosition = window.google.maps.ControlPosition.TOP_RIGHT;
-    ReactDOM.render(<GeoLocate map={map} />, controlsDiv);
-    map.controls[controlsPosition].push(controlsDiv);
+    const locateDiv = document.createElement('div');
+    locateDiv.style = 'padding: 10px';
+
+    const locatePosition = window.google.maps.ControlPosition.TOP_RIGHT;
+    ReactDOM.render(<GeoLocate map={map} />, locateDiv);
+    map.controls[locatePosition].push(locateDiv);
   }, []);
 
   // Use Geolocation to locate the user's location
   function GeoLocate({ map }) {
     return (
-      <Button type="button" onClick={() => {
+      <Button className='geolocate' size='sm' type="button" onClick={() => {
         navigator.geolocation.getCurrentPosition(position => {
           map.panTo({
             lat: position.coords.latitude,
             lng: position.coords.longitude
           });
-          map.setZoom(17);
+          map.setZoom(14);
         }, () => null
         );
       }}
       >
-        <p>{'Find me!'}</p>
+      <p className='locate-text'>{'Find me!'}</p>
       </Button>
     );
   }

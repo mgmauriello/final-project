@@ -66,11 +66,12 @@
   padding: 0.5rem;
 }
 
-.marker-image {
-  width: 30px;
-  height: 30px;
-  object-fit: cover;
-  outline: 3px solid white;
-  color: red;
-  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.3);
+.geolocate {
+  background-color: #456268 !important;
+  box-shadow: 4px 2px 4px grey;
+  border: #456268 !important;
+}
+
+.locate-text {
+  margin: 0;
 }
