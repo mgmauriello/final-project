@@ -72,7 +72,6 @@ export default function Map(props) {
       onClick={onMapClick}
       onLoad={onMapLoad}
       >
-
         {soundscapeMarkers.map(soundscapeMarkers => (
           <Marker
             key={soundscapeMarkers.soundscapeId}
