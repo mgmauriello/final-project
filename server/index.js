@@ -20,7 +20,7 @@ app.use(jsonMiddleware);
 
 app.post('/api/uploads', uploadsMiddleware, (req, res, next) => {
   const { title, description, lat, lng } = req.body;
-  const fileUrl = `/sounds/${req.file.filename}`;
+  const fileUrl = req.file.location;
   const sql = `
     insert into "soundscapes" (
                 "title",
