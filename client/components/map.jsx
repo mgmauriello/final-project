@@ -4,12 +4,12 @@ import {
   Marker,
   InfoWindow
 } from '@react-google-maps/api';
-import AudioPlayer from './AudioPlayer';
+import AudioPlayer from './audio-player';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import SoundscapeForm from './SoundscapeForm';
+import SoundscapeForm from './soundscape-form';
 
 const libraries = ['places'];
 
