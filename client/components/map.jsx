@@ -24,7 +24,7 @@ let counter = 1;
 export default function Map(props) {
 
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: 'AIzaSyDS1KOvY-L9vNT8SmKMZmzgYs8UPzCaJMA',
+    googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
     libraries
   });
 

@@ -1,6 +1,7 @@
 require('dotenv/config');
+const webpack = require('webpack');
+
 const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const clientPath = path.join(__dirname, 'client');
 const serverPublicPath = path.join(__dirname, 'server/public');
 
@@ -30,13 +31,6 @@ module.exports = {
         test: /\.js$/,
         enforce: 'pre',
         use: ['source-map-loader']
-      },
-      {
-        test: /\.css$/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          'css-loader'
-        ]
       }
     ]
   },
@@ -57,9 +51,6 @@ module.exports = {
     hints: false
   },
   plugins: [
-    new MiniCssExtractPlugin({
-      filename: '[name].[chunkhash].css',
-      chunkFilename: '[id].css'
-    })
+    new webpack.EnvironmentPlugin(['GOOGLE_MAPS_API_KEY'])
   ]
 };
