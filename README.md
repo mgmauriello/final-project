@@ -49,7 +49,7 @@ Try the application live at [https://hear-the-world.herokuapp.com/](https://hear
 
 - Node.js 16 or higher
 - NPM 8 or higher
-- Postgres
+- PostgreSQL
 
 ### Getting Started
 
