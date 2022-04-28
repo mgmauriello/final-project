@@ -68,15 +68,15 @@ Try the application live at [https://hear-the-world.herokuapp.com/](https://hear
 
 1. Make a copy of the .env.example file.
 
-  ```shell
-  cp .env.example .env
-  ```
+    ```shell
+    cp .env.example .env
+    ```
 
 1. Start PostgreSQL
 
-  ```shell
-  sudo service postgresql start
-  ```
+    ```shell
+    sudo service postgresql start
+    ```
 
 1. Create a new database
 
