@@ -26,8 +26,14 @@ export default class SoundscapeForm extends React.Component {
     this.setState({ marker });
   }
 
+  handleCloseModal() {
+    this.setState({ showModal: false });
+  }
+
   handleSubmit(event) {
     event.preventDefault();
+
+    this.props.setModal(false);
 
     const { title, description } = this.state;
     const formData = new FormData();

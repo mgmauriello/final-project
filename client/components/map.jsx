@@ -150,7 +150,7 @@ export default function Map(props) {
           <Modal.Title id="soundscape-modal">Create Soundscape</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <SoundscapeForm marker={marker[0]} />
+          <SoundscapeForm marker={marker[0]} setModal={setModal} />
         </ Modal.Body>
       </Modal>
 
