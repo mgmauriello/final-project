@@ -74,8 +74,7 @@ export default function Map(props) {
             lng: position.coords.longitude
           });
           map.setZoom(14);
-        }, () => null
-        );
+        }, () => null);
       }}
       >
       <p className='locate-text'>{'Find me!'}</p>
@@ -134,14 +133,13 @@ export default function Map(props) {
         ))}
         {selected &&
           (<InfoWindow position={{ lat: selected.lat, lng: selected.lng }}
-              onCloseClick={() => {
-                setSelected(null);
-              }}>
+              onCloseClick={() => { setSelected(null); }}
+            >
             <div>
             <Button variant='success' onClick={handleAddSoundscapeClick}>Add Soundscape</Button>
             </div>
-        </InfoWindow>)
-      }
+          </InfoWindow>)
+        }
 
       </GoogleMap>
 
@@ -150,7 +148,7 @@ export default function Map(props) {
           <Modal.Title id="soundscape-modal">Create Soundscape</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <SoundscapeForm marker={marker[0]} />
+          <SoundscapeForm marker={marker[0]} setModal={setModal} />
         </ Modal.Body>
       </Modal>
 

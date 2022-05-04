@@ -29,6 +29,8 @@ export default class SoundscapeForm extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
 
+    this.props.setModal(false);
+
     const { title, description } = this.state;
     const formData = new FormData();
     formData.append('title', title);
