@@ -89,6 +89,10 @@ export default function Map(props) {
     setModal(true);
   };
 
+  const addSoundscapeMarker = marker => {
+    soundscapeMarkers.push(marker);
+  };
+
   return (
     <div>
       <GoogleMap
@@ -148,10 +152,9 @@ export default function Map(props) {
           <Modal.Title id="soundscape-modal">Create Soundscape</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <SoundscapeForm marker={marker[0]} setModal={setModal} />
+          <SoundscapeForm marker={marker[0]} setModal={setModal} addSoundscapeMarker={addSoundscapeMarker}/>
         </ Modal.Body>
       </Modal>
-
     </div>
   );
 }
