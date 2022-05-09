@@ -42,14 +42,14 @@ export default function Map(props) {
   }, []);
 
   // show posted markers for soundscapes
-  const [soundscapeMarkers, setMarkers] = React.useState([]);
+  const [soundscapeMarkers, setSoundscapeMarkers] = React.useState([]);
   const [selectedMarker, setSelectedMarker] = React.useState(null);
 
   React.useEffect(() => {
     fetch('/api/soundscapes')
       .then(response => response.json())
       .then(soundscapeMarkers => {
-        setMarkers(soundscapeMarkers);
+        setSoundscapeMarkers(soundscapeMarkers);
       })
       .catch(err => console.error('Fetch Failed!', err));
   }, []);
@@ -90,7 +90,7 @@ export default function Map(props) {
   };
 
   const addSoundscapeMarker = marker => {
-    soundscapeMarkers.push(marker);
+    setSoundscapeMarkers(markers => markers.concat(marker));
   };
 
   return (
