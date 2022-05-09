@@ -42,14 +42,14 @@ export default function Map(props) {
   }, []);
 
   // show posted markers for soundscapes
-  const [soundscapeMarkers, setMarkers] = React.useState([]);
+  const [soundscapeMarkers, setSoundscapeMarkers] = React.useState([]);
   const [selectedMarker, setSelectedMarker] = React.useState(null);
 
   React.useEffect(() => {
     fetch('/api/soundscapes')
       .then(response => response.json())
       .then(soundscapeMarkers => {
-        setMarkers(soundscapeMarkers);
+        setSoundscapeMarkers(soundscapeMarkers);
       })
       .catch(err => console.error('Fetch Failed!', err));
   }, []);
@@ -87,6 +87,10 @@ export default function Map(props) {
 
   const handleAddSoundscapeClick = () => {
     setModal(true);
+  };
+
+  const addSoundscapeMarker = marker => {
+    setSoundscapeMarkers(markers => markers.concat(marker));
   };
 
   return (
@@ -148,10 +152,9 @@ export default function Map(props) {
           <Modal.Title id="soundscape-modal">Create Soundscape</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <SoundscapeForm marker={marker[0]} setModal={setModal} />
+          <SoundscapeForm marker={marker[0]} setModal={setModal} addSoundscapeMarker={addSoundscapeMarker}/>
         </ Modal.Body>
       </Modal>
-
     </div>
   );
 }

@@ -29,8 +29,6 @@ export default class SoundscapeForm extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
 
-    this.props.setModal(false);
-
     const { title, description } = this.state;
     const formData = new FormData();
     formData.append('title', title);
@@ -45,7 +43,8 @@ export default class SoundscapeForm extends React.Component {
 
     fetch('/api/uploads', req)
       .then(res => res.json())
-      .then(response => {
+      .then(marker => {
+        this.props.addSoundscapeMarker(marker);
         this.setState({
           title: '',
           description: '',
@@ -53,6 +52,8 @@ export default class SoundscapeForm extends React.Component {
           error: ''
         });
         this.fileInputRef.current.value = null;
+        this.props.setModal(false);
+
       })
       .catch(err => console.error('Fetch Failed!', err));
   }
